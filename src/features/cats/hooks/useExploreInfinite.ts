@@ -10,8 +10,10 @@ export function useExploreInfinite() {
     queryFn: ({ pageParam }) => catApi.explore({ limit: LIMIT, page: pageParam }),
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length < LIMIT ? undefined : allPages.length,
-    staleTime: 0,
-    refetchOnMount: 'always',
-    gcTime: 0,
+    gcTime: 5 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   })
 }
