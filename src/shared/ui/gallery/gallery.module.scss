@@ -10,7 +10,7 @@
   gap: 40px;
 
   @media (max-width: 1500px) { grid-template-columns: repeat(3, 1fr); }
-  @media (max-width: 1100px)  { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
   @media (max-width: 600px)  { grid-template-columns: 1fr; }
 }
 
@@ -21,19 +21,7 @@
   justify-self: center;
 }
 
-.grid > *:nth-child(even) {
-  --tilt: 2deg;
-}
-
-.grid > *:nth-child(3n) {
-  --tilt: 0deg;
-}
-
-.grid > *:nth-child(5n) {
-  --tilt: 4deg;
-}
-
-.grid > *:nth-child(7n) {
-  --tilt: -4deg;
-}
-
+.grid > *:nth-child(even) { --tilt: 2deg; }
+.grid > *:nth-child(3n)   { --tilt: 0deg; }
+.grid > *:nth-child(5n)   { --tilt: 4deg; }
+.grid > *:nth-child(7n)   { --tilt: -4deg; }

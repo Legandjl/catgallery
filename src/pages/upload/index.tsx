@@ -14,7 +14,6 @@ const Upload = (): ReactElement => {
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
 
   const handleFile = (selected: File | null) => {
     setError(null)
@@ -41,7 +40,6 @@ const Upload = (): ReactElement => {
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
-    setIsDragging(false)
     handleFile(e.dataTransfer.files?.[0] ?? null)
   }
 
@@ -53,13 +51,11 @@ const Upload = (): ReactElement => {
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
-    setIsDragging(true)
   }
 
   const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
-    setIsDragging(false)
   }
 
   const handleUploaderClick = (e: MouseEvent<HTMLDivElement>) => {

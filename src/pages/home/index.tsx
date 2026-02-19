@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react'
-import { useMyImages } from '../../features/cats/hooks/useMyImages.ts'
+import { useMyCats } from '../../features/cats/hooks/useMyCats.ts'
 
 const Home = (): ReactElement => {
-  const { data, isLoading, isError, error } = useMyImages()
+  const { data, isLoading, isError, error } = useMyCats()
 
   if (isLoading) return <div>Loading…</div>
 
