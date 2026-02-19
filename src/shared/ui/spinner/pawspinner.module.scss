@@ -1,0 +1,21 @@
+.wrapper {
+  display: grid;
+  place-items: center;
+}
+
+.paw {
+  display: block;
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paw {
+    animation: none;
+  }
+}

@@ -1,0 +1,36 @@
+.wrapper {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.header {
+  padding: 1rem;
+}
+
+.headerInner {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  align-content: center;
+  align-items: center;
+  padding-right: 2rem;
+  border-radius: 2rem;
+  padding-left: 2rem;
+  background-color: var(--bgdark);
+
+}
+
+.links {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 1rem;
+}
+
+.links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.links a:hover {
+  opacity: 0.8;
+}
