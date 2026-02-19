@@ -3,7 +3,7 @@ import { catApi } from '../api/catApi'
 
 const LIMIT = 24
 
-export function useExploreInfinite() {
+export const useExploreInfinite = () => {
   return useInfiniteQuery({
     queryKey: ['cats', 'explore', 'infinite', LIMIT],
     initialPageParam: 0,

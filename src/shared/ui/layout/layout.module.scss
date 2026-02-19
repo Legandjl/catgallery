@@ -1,6 +1,9 @@
 .wrapper {
   display: grid;
   grid-template-rows: auto 1fr;
+  height: 100vh;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .header {
@@ -55,4 +58,13 @@
 
 .link.active::after {
   transform: scaleX(1);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  min-height: 0;
+  overflow: auto;
 }

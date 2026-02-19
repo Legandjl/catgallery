@@ -1,0 +1,78 @@
+.wrapper {
+  height: 100%;
+  display: grid;
+  align-content: center;
+  justify-content: center;
+}
+
+.uploader {
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  border: dashed 1px var(--bgdark);
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 35em;
+  height: 25em;
+  cursor: pointer;
+  gap: 1rem;
+  *,
+  h1,
+  p {
+    cursor: inherit;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  button {
+    padding: 0.6rem 1.2rem;
+    background: var(--bgdark);
+    border: 1px solid #000000;
+    border-radius: 8px;
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+    height: 3em;
+    width: 10em;
+
+    transform: scale(1);
+    transition:
+            transform 180ms ease,
+            box-shadow 180ms ease,
+            background 150ms ease;
+  }
+
+  button:hover:not(:disabled) {
+    transform: scale(1.05);
+  }
+
+  button:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.uploader:hover {
+  background: rgba(213, 203, 203, 0.14);
+  cursor: pointer;
+}
+
+.dropZone {
+  display: grid;
+  justify-items: center;
+  cursor: inherit;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.error {
+  color: #9b1212;
+}

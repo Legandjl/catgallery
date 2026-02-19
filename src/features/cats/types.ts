@@ -15,3 +15,13 @@ export type Vote = {
   image_id: string
   value: 0 | 1
 }
+
+export type UploadResponse = {
+  id: string
+  url: string
+}
+
+export type ExploreParams = {
+  limit: number
+  page: number
+}

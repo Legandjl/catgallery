@@ -18,7 +18,7 @@ const Card = ({ url, id }: Props): ReactElement => {
         <img
           className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
           src={url}
-          alt={`Uploaded cat image ${id}`}
+          alt={`Cat image ${id}`}
           loading="lazy"
           onLoad={() => setLoaded(true)}
         />
