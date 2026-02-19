@@ -1,32 +1,52 @@
 import type { ReactElement } from 'react'
-import { useMyCats } from '../../features/cats/hooks/useMyCats.ts'
+import gallery from '../../shared/ui/gallery/gallery.module.scss'
+import { useMyCats } from '../../features/cats/hooks/useMyCats'
+import ImageCard from '../../features/cats/components/card'
+import ImageCardSkeleton from '../../features/cats/components/card/skeleton'
 
 const Home = (): ReactElement => {
   const { data, isLoading, isError, error } = useMyCats()
 
-  if (isLoading) return <div>Loading…</div>
+  const Header = (
+    <div style={{ padding: '1rem 0', justifySelf: 'center' }}>
+      <h2 style={{ margin: 0 }}>My Uploads</h2>
+    </div>
+  )
 
-  if (isError) return <div>{(error as Error).message}</div>
+  if (isLoading) {
+    return (
+      <div className={gallery.wrapper}>
+        {Header}
+        <div className={gallery.grid}>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <ImageCardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    )
+  }
 
-  if (!data?.length) return <div>No cats uploaded yet.</div>
+  if (isError) return <div className={gallery.wrapper}>{(error as Error).message}</div>
+
+  const cats = data ?? []
+
+  if (!cats.length) {
+    return (
+      <div className={gallery.wrapper}>
+        <div style={{ padding: '1rem 0' }}>
+          <h2 style={{ margin: 0 }}>My Cats</h2>
+          <p style={{ marginTop: 8 }}>No cats uploaded yet. Head to Upload and add one.</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div>
-      <h2>My Cats</h2>
-      <div
-        style={{
-          display: 'grid',
-          gap: '12px',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-        }}
-      >
-        {data.map((cat) => (
-          <img
-            key={cat.id}
-            src={cat.url}
-            alt={`Uploaded cat ${cat.id}`}
-            style={{ width: '100%', borderRadius: 8 }}
-          />
+    <div className={gallery.wrapper}>
+      {Header}
+      <div className={gallery.grid}>
+        {cats.map((cat) => (
+          <ImageCard key={cat.id} id={cat.id} url={cat.url} />
         ))}
       </div>
     </div>

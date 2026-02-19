@@ -9,7 +9,7 @@
   display: grid;
   justify-content: center;
   justify-items: center;
-  border: dashed 1px var(--bgdark);
+  border: dashed 2px var(--bgdark);
   padding: 2rem;
   border-radius: 1rem;
   width: 35em;
@@ -20,6 +20,10 @@
   h1,
   p {
     cursor: inherit;
+  }
+
+  h1 {
+    margin-bottom: 0;
   }
 
   p {

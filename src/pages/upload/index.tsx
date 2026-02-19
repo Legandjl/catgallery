@@ -96,7 +96,7 @@ const Upload = (): ReactElement => {
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
       >
-        <h1>Upload a Cat</h1>
+        <h2>Upload</h2>
 
         <div className={`${styles.dropZone}`}>
           <img src={cat} alt="" className={styles.catIllustration} />

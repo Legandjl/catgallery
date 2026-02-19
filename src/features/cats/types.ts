@@ -5,11 +5,6 @@ export type CatImage = {
   height: number
 }
 
-export type Favourite = {
-  id: number
-  image_id: string
-}
-
 export type Vote = {
   id: number
   image_id: string
@@ -24,4 +19,17 @@ export type UploadResponse = {
 export type ExploreParams = {
   limit: number
   page: number
+}
+
+export type Favourite = {
+  id: number
+  image_id: string
+  sub_id?: string
+  created_at?: string
+  image?: { id: string; url: string }
+}
+
+export type CreateFavouriteBody = {
+  image_id: string
+  sub_id?: string
 }

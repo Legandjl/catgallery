@@ -1,9 +1,15 @@
+import type { ReactElement } from 'react'
+import { useRef } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
 import styles from './layout.module.scss'
-import type { ReactElement } from 'react'
 import logo from '../../../assets/images/logo.svg'
+import { useScrollToTop } from '../../../features/cats/hooks/useScrollToTop'
 
 const Layout = (): ReactElement => {
+  const scrollRef = useRef<HTMLElement | null>(null)
+
+  useScrollToTop(scrollRef)
+
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
@@ -35,7 +41,6 @@ const Layout = (): ReactElement => {
             >
               Explore
             </NavLink>
-
             <NavLink
               to="/upload"
               className={({ isActive }) =>
@@ -48,9 +53,21 @@ const Layout = (): ReactElement => {
         </div>
       </header>
 
-      <main className={styles.content}>
+      <main ref={scrollRef} className={styles.content}>
         <Outlet />
       </main>
+
+      <footer className={styles.footer}>
+        <div className={styles.footerInner}>
+          <p>Cat Gallery © {new Date().getFullYear()}</p>
+          <p>
+            Built with React & TheCatAPI ·{' '}
+            <a href="https://github.com/Legandjl/catgallery" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }

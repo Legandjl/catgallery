@@ -18,9 +18,16 @@ const Explore = (): ReactElement => {
     rootMargin: '1400px 0px',
   })
 
+  const Header = (
+    <div style={{ padding: '1rem 0', justifySelf: 'center' }}>
+      <h2 style={{ margin: 0 }}>Explore</h2>
+    </div>
+  )
+
   if (isLoading) {
     return (
       <div className={gallery.wrapper}>
+        {Header}
         <div className={gallery.grid}>
           {Array.from({ length: 12 }).map((_, i) => (
             <ImageCardSkeleton key={i} />
@@ -34,6 +41,7 @@ const Explore = (): ReactElement => {
 
   return (
     <div className={gallery.wrapper}>
+      {Header}
       <div className={gallery.grid}>
         {cats.map((cat) => (
           <ImageCard key={cat.id} id={cat.id} url={cat.url} />

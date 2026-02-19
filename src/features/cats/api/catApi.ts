@@ -1,5 +1,5 @@
-import type { CatImage, ExploreParams, UploadResponse } from '../types'
-import { request } from '../../../shared/api/request'
+import type { CatImage, ExploreParams, UploadResponse, Favourite } from '../types'
+import { jsonRequestInit, request, SUB_ID } from '../../../shared/api/request'
 
 export const catApi = {
   explore: ({ limit, page }: ExploreParams) =>
@@ -16,4 +16,18 @@ export const catApi = {
   },
 
   myImages: (limit = 50) => request<CatImage[]>(`/images?limit=${limit}`),
+
+  getFavourites: () =>
+    request<Favourite[]>(
+      `/favourites?sub_id=${encodeURIComponent(SUB_ID)}&include_image=1&order=DESC`,
+    ),
+
+  favourite: (imageId: string) =>
+    request<{ id: number; message: string }>(
+      `/favourites`,
+      jsonRequestInit({ image_id: imageId, sub_id: SUB_ID }, { method: 'POST' }),
+    ),
+
+  unfavourite: (favouriteId: number) =>
+    request<void>(`/favourites/${favouriteId}`, { method: 'DELETE' }),
 }
