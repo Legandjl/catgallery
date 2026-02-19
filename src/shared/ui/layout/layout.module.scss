@@ -19,18 +19,40 @@
 
 }
 
+
+
 .links {
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 1rem;
+  display: flex;
+  gap: 1.5rem;
 }
 
-.links a {
-  color: white;
+
+.link {
+  position: relative;
   text-decoration: none;
+  color: #fff;
   font-weight: 500;
+  padding: 4px 0;
+  transition: color 150ms ease;
 }
 
-.links a:hover {
-  opacity: 0.8;
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease;
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+}
+
+.link.active::after {
+  transform: scaleX(1);
 }
