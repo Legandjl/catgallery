@@ -67,6 +67,12 @@ export const useHandleVote = () => {
     )
   }
 
+  const removeVoteFromCache = (voteId: number) => {
+    queryClient.setQueryData<Vote[]>(VOTES_QUERY_KEY, (current = []) =>
+      current.filter((vote) => vote.id !== voteId),
+    )
+  }
+
   const {
     mutate: vote,
     isPending,
@@ -92,6 +98,16 @@ export const useHandleVote = () => {
     error: deleteError,
   } = useMutation({
     mutationFn: (voteId: number) => catApi.deleteVote(voteId),
+    onMutate: async (voteId: number) => {
+      await queryClient.cancelQueries({ queryKey: VOTES_QUERY_KEY })
+      const previousVotes = queryClient.getQueryData<Vote[]>(VOTES_QUERY_KEY) ?? []
+      removeVoteFromCache(voteId)
+      return { previousVotes }
+    },
+    onError: (_error, _voteId, context) => {
+      if (!context) return
+      queryClient.setQueryData<Vote[]>(VOTES_QUERY_KEY, context.previousVotes)
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: VOTES_QUERY_KEY })
     },
@@ -104,7 +120,6 @@ export const useHandleVote = () => {
     } else if (alreadyVoted.value === value) {
       deleteVote(alreadyVoted.id)
     } else {
-      console.log('in 3')
       delVote(imageId)
     }
   }
