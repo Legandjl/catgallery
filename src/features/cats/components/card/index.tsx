@@ -15,19 +15,21 @@ type Props = {
 const Card = ({ url, id }: Props): ReactElement => {
   const [loaded, setLoaded] = useState(false)
   const { toggleFavourite, isFavourite, isPending } = useToggleFavourite()
-  const { upvote, getScoreForImage } = useHandleVote()
+  const { setVote, getScoreForImage, getUserVoteValue } = useHandleVote()
 
   const favourite = isFavourite(id)
 
   const handleVoteUp = () => {
     console.log(`User voted UP on image ${id}`)
-    upvote(id, 1)
+    setVote(id, 1)
   }
 
   const handleVoteDown = () => {
     console.log(`User voted DOWN on image ${id}`)
-    upvote(id, -1)
+    setVote(id, -1)
   }
+
+  const voteValue = getUserVoteValue(id)
 
   return (
     <figure className={styles.polaroid}>
@@ -59,7 +61,7 @@ const Card = ({ url, id }: Props): ReactElement => {
             type="button"
             onClick={handleVoteUp}
             aria-label="Vote up"
-            className={styles.voteButton}
+            className={`${styles.voteButton} ${voteValue === 1 ? styles.voteUpActive : ''}`}
           >
             <img src={arrowUp} alt="" />
           </button>
@@ -68,7 +70,7 @@ const Card = ({ url, id }: Props): ReactElement => {
             type="button"
             onClick={handleVoteDown}
             aria-label="Vote down"
-            className={styles.voteButton}
+            className={`${styles.voteButton} ${voteValue === -1 ? styles.voteDownActive : ''}`}
           >
             <img src={arrowDown} alt="" />
           </button>

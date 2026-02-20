@@ -34,7 +34,7 @@ export const catApi = {
   getVotes: () => request<Vote[]>(`/votes?&order=DESC`),
 
   vote: (imageId: string, value: 1 | -1) =>
-    request<{ id: number }>(
+    request<Vote>(
       `/votes`,
       jsonRequestInit({ image_id: imageId, sub_id: SUB_ID, value }, { method: 'POST' }),
     ),
