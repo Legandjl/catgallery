@@ -47,17 +47,14 @@ export const useToggleFavourite = () => {
     )
   }
 
-  const favouriteMutation = useMutation({
+  const { mutate: favourite, isPending: isFavouriting } = useMutation({
     mutationFn: (imageId: string) => catApi.favourite(imageId),
-
     onMutate: async (imageId): Promise<OptimisticContext> => {
       await queryClient.cancelQueries({ queryKey: FAVOURITES_QUERY_KEY })
-
       const previousFavourites = queryClient.getQueryData<Favourite[]>(FAVOURITES_QUERY_KEY) ?? []
       const optimisticFavouriteId = addOptimisticFavouriteToCache(imageId)
       return { previousFavourites, optimisticFavouriteId, imageId }
     },
-
     onError: (_error, _imageId, context) => {
       if (!context) return
       queryClient.setQueryData<Favourite[]>(FAVOURITES_QUERY_KEY, context.previousFavourites)
@@ -69,38 +66,32 @@ export const useToggleFavourite = () => {
     },
   })
 
-  const unfavouriteMutation = useMutation({
+  const { mutate: unfavourite, isPending: isUnfavouriting } = useMutation({
     mutationFn: (favouriteId: number) => catApi.unfavourite(favouriteId),
-
     onMutate: async (favouriteId) => {
       await queryClient.cancelQueries({ queryKey: FAVOURITES_QUERY_KEY })
-
       const previousFavourites = queryClient.getQueryData<Favourite[]>(FAVOURITES_QUERY_KEY) ?? []
-
       removeFavouriteFromCacheById(favouriteId)
-
       return { previousFavourites }
     },
-
     onError: (_error, _favouriteId, context) => {
       if (!context) return
       queryClient.setQueryData<Favourite[]>(FAVOURITES_QUERY_KEY, context.previousFavourites)
     },
-
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: FAVOURITES_QUERY_KEY })
     },
   })
 
-  const isFavourited = (imageId: string) => favouritesByImageId.has(imageId)
+  const isFavourite = (imageId: string) => favouritesByImageId.has(imageId)
 
   const toggleFavourite = (imageId: string) => {
     const existingFavourite = favouritesByImageId.get(imageId)
-    if (existingFavourite) unfavouriteMutation.mutate(existingFavourite.id)
-    else favouriteMutation.mutate(imageId)
+    if (existingFavourite) unfavourite(existingFavourite.id)
+    else favourite(imageId)
   }
 
-  const isPending = favouriteMutation.isPending || unfavouriteMutation.isPending
+  const isPending = isFavouriting || isUnfavouriting
 
-  return { toggle: toggleFavourite, isFavourited, isPending }
+  return { toggleFavourite, isFavourite, isPending }
 }

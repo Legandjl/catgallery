@@ -2,7 +2,10 @@ import type { ReactElement } from 'react'
 import { useState } from 'react'
 import styles from './imageCard.module.scss'
 import heart from '../../../../assets/images/heart.svg'
+import arrowUp from '../../../../assets/images/arrowUp.svg'
+import arrowDown from '../../../../assets/images/arrowDown.svg'
 import { useToggleFavourite } from '../../hooks/useToggleFavourite'
+import { useHandleVote } from '../../hooks/useHandleVote.ts'
 
 type Props = {
   url: string
@@ -11,9 +14,20 @@ type Props = {
 
 const Card = ({ url, id }: Props): ReactElement => {
   const [loaded, setLoaded] = useState(false)
-  const { toggle, isFavourited, isPending } = useToggleFavourite()
+  const { toggleFavourite, isFavourite, isPending } = useToggleFavourite()
+  const { upvote, getScoreForImage } = useHandleVote()
 
-  const favourited = isFavourited(id)
+  const favourite = isFavourite(id)
+
+  const handleVoteUp = () => {
+    console.log(`User voted UP on image ${id}`)
+    upvote(id, 1)
+  }
+
+  const handleVoteDown = () => {
+    console.log(`User voted DOWN on image ${id}`)
+    upvote(id, -1)
+  }
 
   return (
     <figure className={styles.polaroid}>
@@ -31,14 +45,34 @@ const Card = ({ url, id }: Props): ReactElement => {
       <figcaption className={styles.caption}>
         <button
           type="button"
-          onClick={() => toggle(id)}
+          onClick={() => toggleFavourite(id)}
           disabled={isPending}
-          aria-label={favourited ? 'Unfavourite' : 'Favourite'}
-          aria-pressed={favourited}
-          className={`${styles.favButton} ${favourited ? styles.favActive : ''}`}
+          aria-label={favourite ? 'Unfavourite' : 'Favourite'}
+          aria-pressed={favourite}
+          className={`${styles.favButton} ${favourite ? styles.favActive : ''}`}
         >
           <img className={styles.heartIcon} src={heart} alt="" />
         </button>
+
+        <div className={styles.voteButtons}>
+          <button
+            type="button"
+            onClick={handleVoteUp}
+            aria-label="Vote up"
+            className={styles.voteButton}
+          >
+            <img src={arrowUp} alt="" />
+          </button>
+          <p>{getScoreForImage(id)}</p>
+          <button
+            type="button"
+            onClick={handleVoteDown}
+            aria-label="Vote down"
+            className={styles.voteButton}
+          >
+            <img src={arrowDown} alt="" />
+          </button>
+        </div>
       </figcaption>
     </figure>
   )

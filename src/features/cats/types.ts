@@ -8,7 +8,10 @@ export type CatImage = {
 export type Vote = {
   id: number
   image_id: string
-  value: 0 | 1
+  sub_id?: string
+  value: 1 | -1
+  created_at?: string
+  image?: { id: string; url: string }
 }
 
 export type UploadResponse = {
@@ -27,9 +30,4 @@ export type Favourite = {
   sub_id?: string
   created_at?: string
   image?: { id: string; url: string }
-}
-
-export type CreateFavouriteBody = {
-  image_id: string
-  sub_id?: string
 }

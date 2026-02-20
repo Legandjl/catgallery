@@ -72,6 +72,7 @@
   display: grid;
   align-items: center;
   justify-items: start;
+  grid-template-columns: 1fr auto;
 }
 
 .favButton {
@@ -104,4 +105,23 @@
 .favActive .heartIcon {
   filter: invert(16%) sepia(99%) saturate(7484%) hue-rotate(1deg) brightness(97%) contrast(119%);
   transform: scale(1.1);
+}
+
+.voteButtons {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-gap: 10px;
+}
+
+.voteButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+
+  img {
+    height: 24px;
+  }
 }
