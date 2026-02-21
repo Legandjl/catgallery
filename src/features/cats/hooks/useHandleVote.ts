@@ -40,6 +40,14 @@ export const useHandleVote = () => {
     return score
   }
 
+  const isOptimisticId = (id: number) => id < 0
+  const isServerId = (id: number) => id > 0
+
+  const isNotFoundDelete = (err: unknown) => {
+    const msg = err instanceof Error ? err.message : String(err)
+    return msg.includes('NO_VOTE_FOUND_MATCHING_ID') || msg.includes('404')
+  }
+
   // Cache operations
 
   const addOptimisticVote = (vote: VoteVariables) => {
@@ -90,13 +98,12 @@ export const useHandleVote = () => {
     error: flipError,
   } = useMutation<Vote, Error, FlipVariables, { previousVotes: Vote[]; existingVoteId: number }>({
     mutationFn: async ({ existingVoteId, imageId, nextValue }) => {
-      try {
-        await catApi.deleteVote(existingVoteId)
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err)
-        // Intentionally ignored as The API can respond 404
-        // if the vote was already deleted (stale cache / rapid clicking).
-        if (!msg.includes('NO_VOTE_FOUND_MATCHING_ID')) throw err
+      if (isServerId(existingVoteId)) {
+        try {
+          await catApi.deleteVote(existingVoteId)
+        } catch (err) {
+          if (!isNotFoundDelete(err)) throw err
+        }
       }
 
       return catApi.vote(imageId, nextValue)
@@ -123,7 +130,6 @@ export const useHandleVote = () => {
 
     onSuccess: (response, _vars, context) => {
       if (!context) return
-      // Replace the old vote id (deleted server-side) with the new vote id (created server-side)
       replaceVoteId(context.existingVoteId, response.id)
       queryClient.invalidateQueries({ queryKey: VOTES_QUERY_KEY })
     },
@@ -135,7 +141,15 @@ export const useHandleVote = () => {
     isPending: deletePending,
     error: deleteError,
   } = useMutation({
-    mutationFn: (voteId: number) => catApi.deleteVote(voteId),
+    mutationFn: async (voteId: number) => {
+      if (isOptimisticId(voteId)) return
+
+      try {
+        await catApi.deleteVote(voteId)
+      } catch (err) {
+        if (!isNotFoundDelete(err)) throw err
+      }
+    },
 
     onMutate: async (voteId: number) => {
       await queryClient.cancelQueries({ queryKey: VOTES_QUERY_KEY })
