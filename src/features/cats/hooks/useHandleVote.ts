@@ -192,17 +192,27 @@ export const useHandleVote = () => {
     },
   })
 
-  const setVote = (imageId: string, value: 1 | -1) => {
-    const existing = votes.find((v) => v.sub_id === SUB_ID && v.image_id === imageId)
+  //Translates the user’s final intended vote state into the appropriate server mutation.
+
+  const commitVote = (imageId: string, desired: -1 | 0 | 1) => {
+    const existing = (queryClient.getQueryData<Vote[]>(VOTES_QUERY_KEY) ?? []).find(
+      (vote) => vote.sub_id === SUB_ID && vote.image_id === imageId,
+    )
+    if (desired === 0) {
+      if (existing) {
+        deleteVote(existing.id)
+      }
+      return
+    }
 
     // No existing vote (create)
     if (!existing) {
-      vote({ imageId, value })
+      vote({ imageId, value: desired as 1 | -1 })
       return
     }
 
     // Clicking the same vote again (toggle off)
-    if (existing.value === value) {
+    if (existing.value === desired) {
       deleteVote(existing.id)
       return
     }
@@ -211,25 +221,12 @@ export const useHandleVote = () => {
     flipVote({
       existingVoteId: existing.id,
       imageId,
-      nextValue: value,
+      nextValue: desired,
     })
-  }
-
-  const commitVote = (imageId: string, desired: -1 | 0 | 1) => {
-    const existing = votes.find((v) => v.sub_id === SUB_ID && v.image_id === imageId)
-
-    if (desired === 0) {
-      if (existing) {
-        deleteVote(existing.id)
-      }
-      return
-    }
-
-    setVote(imageId, desired)
   }
 
   const isBusy = isPending || deletePending || flipPending
   const combinedError = error ?? deleteError ?? flipError
 
-  return { setVote, isBusy, combinedError, getScoreForImage, getUserVoteValue, commitVote }
+  return { isBusy, combinedError, getScoreForImage, getUserVoteValue, commitVote }
 }

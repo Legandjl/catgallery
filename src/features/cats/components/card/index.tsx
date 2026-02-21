@@ -1,11 +1,11 @@
-import { type ReactElement, useEffect, useRef } from 'react'
+import { type ReactElement } from 'react'
 import { useState } from 'react'
 import styles from './imageCard.module.scss'
 import heart from '../../../../assets/images/heart.svg'
 import arrowUp from '../../../../assets/images/arrowUp.svg'
 import arrowDown from '../../../../assets/images/arrowDown.svg'
 import { useToggleFavourite } from '../../hooks/useToggleFavourite'
-import { useHandleVote } from '../../hooks/useHandleVote.ts'
+import { useLocalVote } from '../../hooks/useLocalVote.ts'
 
 type Props = {
   url: string
@@ -15,48 +15,9 @@ type Props = {
 const Card = ({ url, id }: Props): ReactElement => {
   const [loaded, setLoaded] = useState(false)
   const { toggleFavourite, isFavourite, isPending } = useToggleFavourite()
-  const { getScoreForImage, getUserVoteValue, commitVote, isBusy } = useHandleVote()
-  const [localVote, setLocalVote] = useState<-1 | 0 | 1 | null>(null)
-  const serverVote = getUserVoteValue(id)
-  const serverScore = getScoreForImage(id)
-
-  const timerRef = useRef<number | null>(null)
-
-  useEffect(() => {
-    return () => {
-      if (timerRef.current !== null) clearTimeout(timerRef.current)
-    }
-  }, [])
-
-  const effectiveVote = localVote ?? serverVote
-
-  const effectiveScore = serverScore + (effectiveVote - serverVote)
+  const { handleVoteUp, handleVoteDown, effectiveScore, effectiveVote } = useLocalVote(id)
 
   const favourite = isFavourite(id)
-
-  const handleVoteUp = () => {
-    const nextVote: -1 | 0 | 1 = effectiveVote === 1 ? 0 : 1
-    setLocalVote(nextVote)
-    if (timerRef.current !== null) {
-      clearTimeout(timerRef.current)
-    }
-    timerRef.current = window.setTimeout(() => {
-      commitVote(id, nextVote)
-      setLocalVote(null)
-    }, 1000)
-  }
-
-  const handleVoteDown = () => {
-    const nextVote: -1 | 0 | 1 = effectiveVote === -1 ? 0 : -1
-    setLocalVote(nextVote)
-    if (timerRef.current !== null) {
-      clearTimeout(timerRef.current)
-    }
-    timerRef.current = window.setTimeout(() => {
-      commitVote(id, nextVote)
-      setLocalVote(null)
-    }, 1000)
-  }
 
   return (
     <figure className={styles.polaroid}>
