@@ -215,8 +215,21 @@ export const useHandleVote = () => {
     })
   }
 
+  const commitVote = (imageId: string, desired: -1 | 0 | 1) => {
+    const existing = votes.find((v) => v.sub_id === SUB_ID && v.image_id === imageId)
+
+    if (desired === 0) {
+      if (existing) {
+        deleteVote(existing.id)
+      }
+      return
+    }
+
+    setVote(imageId, desired)
+  }
+
   const isBusy = isPending || deletePending || flipPending
   const combinedError = error ?? deleteError ?? flipError
 
-  return { setVote, isBusy, combinedError, getScoreForImage, getUserVoteValue }
+  return { setVote, isBusy, combinedError, getScoreForImage, getUserVoteValue, commitVote }
 }

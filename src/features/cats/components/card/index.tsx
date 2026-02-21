@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react'
+import { type ReactElement, useEffect, useRef } from 'react'
 import { useState } from 'react'
 import styles from './imageCard.module.scss'
 import heart from '../../../../assets/images/heart.svg'
@@ -15,21 +15,48 @@ type Props = {
 const Card = ({ url, id }: Props): ReactElement => {
   const [loaded, setLoaded] = useState(false)
   const { toggleFavourite, isFavourite, isPending } = useToggleFavourite()
-  const { setVote, getScoreForImage, getUserVoteValue, isBusy } = useHandleVote()
+  const { getScoreForImage, getUserVoteValue, commitVote, isBusy } = useHandleVote()
+  const [localVote, setLocalVote] = useState<-1 | 0 | 1 | null>(null)
+  const serverVote = getUserVoteValue(id)
+  const serverScore = getScoreForImage(id)
+
+  const timerRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current !== null) clearTimeout(timerRef.current)
+    }
+  }, [])
+
+  const effectiveVote = localVote ?? serverVote
+
+  const effectiveScore = serverScore + (effectiveVote - serverVote)
 
   const favourite = isFavourite(id)
 
   const handleVoteUp = () => {
-    console.log(`User voted UP on image ${id}`)
-    setVote(id, 1)
+    const nextVote: -1 | 0 | 1 = effectiveVote === 1 ? 0 : 1
+    setLocalVote(nextVote)
+    if (timerRef.current !== null) {
+      clearTimeout(timerRef.current)
+    }
+    timerRef.current = window.setTimeout(() => {
+      commitVote(id, nextVote)
+      setLocalVote(null)
+    }, 1000)
   }
 
   const handleVoteDown = () => {
-    console.log(`User voted DOWN on image ${id}`)
-    setVote(id, -1)
+    const nextVote: -1 | 0 | 1 = effectiveVote === -1 ? 0 : -1
+    setLocalVote(nextVote)
+    if (timerRef.current !== null) {
+      clearTimeout(timerRef.current)
+    }
+    timerRef.current = window.setTimeout(() => {
+      commitVote(id, nextVote)
+      setLocalVote(null)
+    }, 1000)
   }
-
-  const voteValue = getUserVoteValue(id)
 
   return (
     <figure className={styles.polaroid}>
@@ -58,21 +85,19 @@ const Card = ({ url, id }: Props): ReactElement => {
 
         <div className={styles.voteButtons}>
           <button
-            disabled={isBusy}
             type="button"
             onClick={handleVoteUp}
             aria-label="Vote up"
-            className={`${styles.voteButton} ${voteValue === 1 ? styles.voteUpActive : ''}`}
+            className={`${styles.voteButton} ${effectiveVote === 1 ? styles.voteUpActive : ''}`}
           >
             <img src={arrowUp} alt="" />
           </button>
-          <p>{getScoreForImage(id)}</p>
+          <p>{effectiveScore}</p>
           <button
-            disabled={isBusy}
             type="button"
             onClick={handleVoteDown}
             aria-label="Vote down"
-            className={`${styles.voteButton} ${voteValue === -1 ? styles.voteDownActive : ''}`}
+            className={`${styles.voteButton} ${effectiveVote === -1 ? styles.voteDownActive : ''}`}
           >
             <img src={arrowDown} alt="" />
           </button>
