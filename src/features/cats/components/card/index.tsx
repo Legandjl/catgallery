@@ -15,7 +15,7 @@ type Props = {
 const Card = ({ url, id }: Props): ReactElement => {
   const [loaded, setLoaded] = useState(false)
   const { toggleFavourite, isFavourite, isPending } = useToggleFavourite()
-  const { setVote, getScoreForImage, getUserVoteValue } = useHandleVote()
+  const { setVote, getScoreForImage, getUserVoteValue, isBusy } = useHandleVote()
 
   const favourite = isFavourite(id)
 
@@ -58,6 +58,7 @@ const Card = ({ url, id }: Props): ReactElement => {
 
         <div className={styles.voteButtons}>
           <button
+            disabled={isBusy}
             type="button"
             onClick={handleVoteUp}
             aria-label="Vote up"
@@ -67,6 +68,7 @@ const Card = ({ url, id }: Props): ReactElement => {
           </button>
           <p>{getScoreForImage(id)}</p>
           <button
+            disabled={isBusy}
             type="button"
             onClick={handleVoteDown}
             aria-label="Vote down"
