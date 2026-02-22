@@ -1,9 +1,24 @@
 const BASE_URL = 'https://api.thecatapi.com/v1'
 const API_KEY = import.meta.env.VITE_CAT_API_KEY as string | undefined
-export const SUB_ID = import.meta.env.VITE_SUB_ID as string | undefined
+const ENV_SUB_ID = import.meta.env.VITE_SUB_ID as string | undefined
+
+const GENERATED_SUB_KEY = 'catgallery_sub'
+
+const getOrCreateSubId = (): string => {
+  if (ENV_SUB_ID) return ENV_SUB_ID
+
+  const existing = localStorage.getItem(GENERATED_SUB_KEY)
+  if (existing) return existing
+
+  const fresh = `cat-${crypto.randomUUID()}`
+  localStorage.setItem(GENERATED_SUB_KEY, fresh)
+  return fresh
+}
+
+export const SUB_ID = getOrCreateSubId()
 
 if (!API_KEY) console.warn('Missing VITE_CAT_API_KEY in .env')
-if (!SUB_ID) console.warn('Missing VITE_SUB_ID in .env')
+if (!ENV_SUB_ID) console.info('VITE_SUB_ID not set; using generated local identifier')
 
 type ApiErrorBody = { message?: string; [key: string]: unknown }
 
