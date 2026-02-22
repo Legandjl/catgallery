@@ -14,6 +14,7 @@ npm install
 2) Create `.env` at project root:
 ```bash
 VITE_CAT_API_KEY=your-cat-api-key
+VITE_SUB_ID=your-sub-id (any string)
 ```
 3) Run the app:
 ```bash
@@ -35,5 +36,15 @@ The dev server prints the local URL (defaults to http://localhost:5173).
 - Favourites view at `/favourites`.
 
 ## API
-- Uses https://api.thecatapi.com/v1 with `x-api-key` from `VITE_CAT_API_KEY`.
-- `sub_id` set to `catgallery-dorian` for user-scoped votes/favourites.
+
+Uses https://api.thecatapi.com/v1 with x-api-key from VITE_CAT_API_KEY.
+
+Supports optional VITE_SUB_ID for user-scoped votes/favourites/uploads.
+
+If VITE_SUB_ID is not provided, a persistent random identifier is generated and stored in localStorage to maintain user state across sessions in the same browser.
+
+## Demo
+
+Live demo (pre-seeded with a healthy amount of my own cat content):
+
+https://cat-gallery-vercel.vercel.app/
