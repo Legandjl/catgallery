@@ -3,6 +3,7 @@ import { catApi } from '../api/catApi.ts'
 import { useVotes } from './useVotes.ts'
 import { SUB_ID } from '../../../shared/api/request.ts'
 import type { Vote } from '../types.ts'
+import { decideVoteAction, type ExistingVote } from '../helpers/voteDecision.ts'
 
 type VoteVariables = {
   imageId: string
@@ -195,34 +196,31 @@ export const useHandleVote = () => {
   //Translates the user’s final intended vote state into the appropriate server mutation.
 
   const commitVote = (imageId: string, desired: -1 | 0 | 1) => {
-    const existing = (queryClient.getQueryData<Vote[]>(VOTES_QUERY_KEY) ?? []).find(
+    const existingVote = (queryClient.getQueryData<Vote[]>(VOTES_QUERY_KEY) ?? []).find(
       (vote) => vote.sub_id === SUB_ID && vote.image_id === imageId,
     )
-    if (desired === 0) {
-      if (existing) {
-        deleteVote(existing.id)
-      }
-      return
-    }
+    const existing: ExistingVote = existingVote
+      ? { id: existingVote.id, value: existingVote.value as -1 | 1 }
+      : null
 
-    // No existing vote (create)
-    if (!existing) {
-      vote({ imageId, value: desired as 1 | -1 })
-      return
-    }
+    const decision = decideVoteAction(existing, desired)
 
-    // Clicking the same vote again (toggle off)
-    if (existing.value === desired) {
-      deleteVote(existing.id)
-      return
-    }
+    switch (decision.kind) {
+      case 'noop':
+        return
 
-    // Switching from upvote to downvote (flip)
-    flipVote({
-      existingVoteId: existing.id,
-      imageId,
-      nextValue: desired,
-    })
+      case 'delete':
+        deleteVote(decision.id)
+        return
+
+      case 'create':
+        vote({ imageId, value: decision.value })
+        return
+
+      case 'flip':
+        flipVote({ existingVoteId: decision.id, imageId, nextValue: decision.value })
+        return
+    }
   }
 
   const isBusy = isPending || deletePending || flipPending
