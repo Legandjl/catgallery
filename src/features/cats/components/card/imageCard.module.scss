@@ -116,6 +116,11 @@
   font-weight: bold;
 }
 
+.score {
+  margin: 0;
+  line-height: 1;
+}
+
 .voteButton {
   background: none;
   border: none;
@@ -148,4 +153,20 @@
 
 .voteDownActive {
   opacity: 1;
+}
+
+.voteSkeleton {
+  opacity: 0.10;
+}
+
+.voteCountSkeleton {
+  width: 40px;
+  background-color: rgba(68, 66, 66, 0.11);
+  height: 10px;
+  border-radius: 12px;
+  margin: 10px;
+}
+
+.heartSkeleton {
+  opacity: 0.10;
 }

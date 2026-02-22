@@ -46,6 +46,7 @@ const Card = ({ url, id }: Props): ReactElement => {
 
         <div className={styles.voteButtons}>
           <button
+            data-testid={`vote-up-${id}`}
             type="button"
             onClick={handleVoteUp}
             aria-label="Vote up"
@@ -53,8 +54,13 @@ const Card = ({ url, id }: Props): ReactElement => {
           >
             <img src={arrowUp} alt="" />
           </button>
-          <p>{effectiveScore}</p>
+
+          <p data-testid={`vote-score-${id}`} className={styles.score}>
+            {effectiveScore}
+          </p>
+
           <button
+            data-testid={`vote-down-${id}`}
             type="button"
             onClick={handleVoteDown}
             aria-label="Vote down"
