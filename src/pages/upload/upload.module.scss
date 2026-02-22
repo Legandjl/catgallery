@@ -12,10 +12,10 @@
   border: dashed 2px var(--bgdark);
   padding: 2rem;
   border-radius: 1rem;
-  max-width: 35em;
   height: 25em;
   cursor: pointer;
   gap: 1rem;
+  width: 30em;
 
   @media (max-width: 500px)  {   border: none;}
 

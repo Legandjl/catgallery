@@ -1,8 +1,9 @@
 const BASE_URL = 'https://api.thecatapi.com/v1'
 const API_KEY = import.meta.env.VITE_CAT_API_KEY as string | undefined
-export const SUB_ID = 'catgallery-dorian'
+export const SUB_ID = import.meta.env.VITE_SUB_ID as string | undefined
 
 if (!API_KEY) console.warn('Missing VITE_CAT_API_KEY in .env')
+if (!SUB_ID) console.warn('Missing VITE_SUB_ID in .env')
 
 type ApiErrorBody = { message?: string; [key: string]: unknown }
 
