@@ -16,6 +16,9 @@
   height: 25em;
   cursor: pointer;
   gap: 1rem;
+
+  @media (max-width: 500px)  {   border: none;}
+
   *,
   h1,
   p {
@@ -28,6 +31,7 @@
 
   p {
     margin: 0;
+    text-align: center;
   }
 
   button {
@@ -65,6 +69,7 @@
 .uploader:hover {
   background: rgba(213, 203, 203, 0.14);
   cursor: pointer;
+  @media (max-width: 500px)  {   background-color: inherit}
 }
 
 .dropZone {
