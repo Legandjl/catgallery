@@ -19,6 +19,8 @@
   border-radius: 2rem;
   padding-left: 2rem;
   background-color: var(--bgdark);
+  @media (max-width: 480px)  { justify-items: center;}
+  @media (max-width: 400px)  { font-size: 0.7em}
 
 }
 
@@ -87,6 +89,19 @@
 
   font-size: 0.9rem;
   color: rgba(0, 0, 0, 0.6);
+
+  @media (max-width: 480px)  {
+    display: grid;
+    grid-auto-flow: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 10px;
+    padding: 0.5rem;
+    p {
+      margin: 0;
+    }
+  }
 }
 
 .footer a {
@@ -98,4 +113,8 @@
 
 .footer a:hover {
   border-color: currentColor;
+}
+
+.logo {
+  @media (max-width: 480px)  { display: none }
 }

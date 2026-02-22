@@ -13,7 +13,7 @@ type Props = {
 }
 
 const Card = ({ url, id }: Props): ReactElement => {
-  const [loaded, setLoaded] = useState(false)
+  const [imgLoaded, setImgLoaded] = useState(false)
   const { toggleFavourite, isFavourite, isPending } = useToggleFavourite()
   const { handleVoteUp, handleVoteDown, effectiveScore, effectiveVote } = useLocalVote(id)
 
@@ -24,11 +24,11 @@ const Card = ({ url, id }: Props): ReactElement => {
       <div className={styles.media}>
         <div className={styles.imageSkeleton} aria-hidden="true" />
         <img
-          className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
+          className={`${styles.img} ${imgLoaded ? styles.imgLoaded : ''}`}
           src={url}
           alt={`Cat image ${id}`}
           loading="lazy"
-          onLoad={() => setLoaded(true)}
+          onLoad={() => setImgLoaded(true)}
         />
       </div>
 

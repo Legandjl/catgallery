@@ -14,7 +14,7 @@ const Layout = (): ReactElement => {
     <div className={styles.wrapper}>
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <img src={logo} alt="Cat Gallery Logo" />
+          <img src={logo} alt="Cat Gallery Logo" className={styles.logo} />
           <nav className={styles.links}>
             <NavLink
               to="/"
