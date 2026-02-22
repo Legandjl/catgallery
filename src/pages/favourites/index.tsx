@@ -1,15 +1,15 @@
 import type { ReactElement } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import gallery from '../../shared/ui/gallery/gallery.module.scss'
 import ImageCard from '../../features/cats/components/card'
 import ImageCardSkeleton from '../../features/cats/components/card/skeleton'
 import { useFavourites } from '../../features/cats/hooks/useFavourites'
 
 const Favourites = (): ReactElement => {
-  const { data, isLoading, isError, error } = useFavourites()
+  const { data, isLoading, isError } = useFavourites()
   const Header = (
     <div style={{ padding: '1rem 0', justifySelf: 'center' }}>
-      <h2 style={{ margin: 0 }}>Favourites</h2>
+      <h3 style={{ margin: 0 }}>Favourites</h3>
     </div>
   )
 
@@ -26,7 +26,7 @@ const Favourites = (): ReactElement => {
     )
   }
 
-  if (isError) return <div className={gallery.wrapper}>{(error as Error).message}</div>
+  if (isError) return <Navigate to="/oops" replace />
 
   if (!data?.length)
     return (

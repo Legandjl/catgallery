@@ -6,6 +6,7 @@ import Upload from './pages/upload'
 import Explore from './pages/explore'
 import Favourites from './pages/favourites'
 import NotFound from './pages/notFound'
+import OopsPage from './pages/oopsPage'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/oops" element={<OopsPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

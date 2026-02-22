@@ -1,16 +1,16 @@
 import type { ReactElement } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import gallery from '../../shared/ui/gallery/gallery.module.scss'
 import { useMyCats } from '../../features/cats/hooks/useMyCats'
 import ImageCard from '../../features/cats/components/card'
 import ImageCardSkeleton from '../../features/cats/components/card/skeleton'
 
 const Home = (): ReactElement => {
-  const { data, isLoading, isError, error } = useMyCats()
+  const { data, isLoading, isError } = useMyCats()
 
   const Header = (
     <div style={{ padding: '1rem 0', justifySelf: 'center' }}>
-      <h2 style={{ margin: 0 }}>My Uploads</h2>
+      <h3 style={{ margin: 0 }}>My Uploads</h3>
     </div>
   )
 
@@ -27,7 +27,7 @@ const Home = (): ReactElement => {
     )
   }
 
-  if (isError) return <div className={gallery.wrapper}>{(error as Error).message}</div>
+  if (isError) return <Navigate to="/oops" replace />
 
   const cats = data ?? []
 

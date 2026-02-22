@@ -5,9 +5,10 @@ import ImageCard from '../../features/cats/components/card'
 import ImageCardSkeleton from '../../features/cats/components/card/skeleton'
 import PawSpinner from '../../shared/ui/spinner'
 import { useInfiniteScroll } from '../../shared/hooks/useInfiniteScroll'
+import { Navigate } from 'react-router-dom'
 
 const Explore = (): ReactElement => {
-  const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useExploreCats()
 
   const cats = data?.pages.flat() ?? []
@@ -20,7 +21,7 @@ const Explore = (): ReactElement => {
 
   const Header = (
     <div style={{ padding: '1rem 0', justifySelf: 'center' }}>
-      <h2 style={{ margin: 0 }}>Explore</h2>
+      <h3 style={{ margin: 0 }}>Explore</h3>
     </div>
   )
 
@@ -37,7 +38,7 @@ const Explore = (): ReactElement => {
     )
   }
 
-  if (isError) return <div className={gallery.wrapper}>{(error as Error).message}</div>
+  if (isError) return <Navigate to="/oops" replace />
 
   return (
     <div className={gallery.wrapper}>
