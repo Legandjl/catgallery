@@ -3,6 +3,7 @@
   padding-right: 2.5em;
   width: 100%;
   display: grid;
+  min-height: 100%;
 }
 
 .grid {
@@ -27,3 +28,12 @@
 .grid > *:nth-child(3n)   { --tilt: 0deg; }
 .grid > *:nth-child(5n)   { --tilt: 4deg; }
 .grid > *:nth-child(7n)   { --tilt: -4deg; }
+
+.empty {
+align-self: center;
+  a {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+  }
+}

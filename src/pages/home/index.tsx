@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { Link } from 'react-router-dom'
 import gallery from '../../shared/ui/gallery/gallery.module.scss'
 import { useMyCats } from '../../features/cats/hooks/useMyCats'
 import ImageCard from '../../features/cats/components/card'
@@ -33,9 +34,14 @@ const Home = (): ReactElement => {
   if (!cats.length) {
     return (
       <div className={gallery.wrapper}>
-        <div style={{ padding: '1rem 0' }}>
-          <h2 style={{ margin: 0 }}>My Cats</h2>
-          <p style={{ marginTop: 8 }}>No cats uploaded yet. Head to Upload and add one.</p>
+        <div
+          className={gallery.empty}
+          style={{ padding: '1rem 0', justifySelf: 'center', alignSelf: 'center' }}
+        >
+          <p style={{ marginTop: 8 }}>
+            No cats uploaded yet. <Link to="/upload">Upload a cat</Link> or{' '}
+            <Link to="/explore">browse Explore</Link> to get started.
+          </p>
         </div>
       </div>
     )

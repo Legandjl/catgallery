@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { Link } from 'react-router-dom'
 import gallery from '../../shared/ui/gallery/gallery.module.scss'
 import ImageCard from '../../features/cats/components/card'
 import ImageCardSkeleton from '../../features/cats/components/card/skeleton'
@@ -27,7 +28,20 @@ const Favourites = (): ReactElement => {
 
   if (isError) return <div className={gallery.wrapper}>{(error as Error).message}</div>
 
-  if (!data?.length) return <div className={gallery.wrapper}>No favourites yet.</div>
+  if (!data?.length)
+    return (
+      <div className={gallery.wrapper}>
+        <div
+          className={gallery.empty}
+          style={{ padding: '1rem 0', justifySelf: 'center', alignSelf: 'center' }}
+        >
+          <p style={{ marginTop: 8 }}>
+            No favourites yet. <Link to="/explore">Explore cats</Link> or{' '}
+            <Link to="/upload">Upload your own</Link> to start a collection.
+          </p>
+        </div>
+      </div>
+    )
 
   return (
     <div className={gallery.wrapper}>
