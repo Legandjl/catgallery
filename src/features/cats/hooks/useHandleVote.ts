@@ -4,6 +4,7 @@ import { useVotes } from './useVotes.ts'
 import { SUB_ID } from '../../../shared/api/request.ts'
 import type { Vote } from '../types.ts'
 import { decideVoteAction, type ExistingVote } from '../helpers/voteDecision.ts'
+import toast from 'react-hot-toast'
 
 type VoteVariables = {
   imageId: string
@@ -127,6 +128,7 @@ export const useHandleVote = () => {
     onError: (_err, _vars, context) => {
       if (!context) return
       queryClient.setQueryData<Vote[]>(VOTES_QUERY_KEY, context.previousVotes)
+      toast.error('Couldn’t save vote. Please try again.')
     },
 
     onSuccess: (response, _vars, context) => {
@@ -162,6 +164,7 @@ export const useHandleVote = () => {
     onError: (_error, _voteId, context) => {
       if (!context) return
       queryClient.setQueryData<Vote[]>(VOTES_QUERY_KEY, context.previousVotes)
+      toast.error('Couldn’t save vote. Please try again.')
     },
 
     onSuccess: () => {
@@ -184,6 +187,12 @@ export const useHandleVote = () => {
       const optimisticVoteId = addOptimisticVote({ imageId, value })
 
       return { previousVotes, optimisticVoteId, imageId }
+    },
+
+    onError: (_err, _vars, context) => {
+      if (!context) return
+      queryClient.setQueryData<Vote[]>(VOTES_QUERY_KEY, context.previousVotes)
+      toast.error('Couldn’t save vote. Please try again.')
     },
 
     onSuccess: (response, _variables, context) => {

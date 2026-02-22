@@ -8,7 +8,7 @@ export const catApi = {
   upload: (file: File) => {
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('sub_id', SUB_ID)
+    formData.append('sub_id', SUB_ID as string)
 
     return request<UploadResponse>(`/images/upload`, {
       method: 'POST',
@@ -17,11 +17,13 @@ export const catApi = {
   },
 
   myImages: (limit = 50) =>
-    request<CatImage[]>(`/images?limit=${limit}&order=DESC&sub_id=${encodeURIComponent(SUB_ID)}`),
+    request<CatImage[]>(
+      `/images?limit=${limit}&order=DESC&sub_id=${encodeURIComponent(SUB_ID as string)}`,
+    ),
 
   getFavourites: () =>
     request<Favourite[]>(
-      `/favourites?sub_id=${encodeURIComponent(SUB_ID)}&include_image=1&order=DESC`,
+      `/favourites?sub_id=${encodeURIComponent(SUB_ID as string)}&include_image=1&order=DESC`,
     ),
 
   favourite: (imageId: string) =>

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { catApi } from '../api/catApi'
 import type { Favourite } from '../types'
 import { useFavourites } from './useFavourites'
+import toast from 'react-hot-toast'
 
 const FAVOURITES_QUERY_KEY = ['cats', 'favourites'] as const
 
@@ -58,6 +59,7 @@ export const useToggleFavourite = () => {
     onError: (_error, _imageId, context) => {
       if (!context) return
       queryClient.setQueryData<Favourite[]>(FAVOURITES_QUERY_KEY, context.previousFavourites)
+      toast.error('Couldn’t save favourite. Please try again.')
     },
     onSuccess: (response, imageId, context) => {
       if (!context) return
@@ -77,6 +79,7 @@ export const useToggleFavourite = () => {
     onError: (_error, _favouriteId, context) => {
       if (!context) return
       queryClient.setQueryData<Favourite[]>(FAVOURITES_QUERY_KEY, context.previousFavourites)
+      toast.error('Couldn’t save favourite. Please try again.')
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: FAVOURITES_QUERY_KEY })

@@ -4,6 +4,7 @@ import { Outlet, NavLink } from 'react-router-dom'
 import styles from './layout.module.scss'
 import logo from '../../../assets/images/logo.svg'
 import { useScrollToTop } from '../../../features/cats/hooks/useScrollToTop'
+import { Toaster } from 'react-hot-toast'
 
 const Layout = (): ReactElement => {
   const scrollRef = useRef<HTMLElement | null>(null)
@@ -68,6 +69,7 @@ const Layout = (): ReactElement => {
           </p>
         </div>
       </footer>
+      <Toaster position="bottom-right" />
     </div>
   )
 }
