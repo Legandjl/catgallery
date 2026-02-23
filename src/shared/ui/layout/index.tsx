@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
 import styles from './layout.module.scss'
 import logo from '../../../assets/images/logo.svg'
-import { useScrollToTop } from '../../../features/cats/hooks/useScrollToTop'
+import { useScrollToTop } from '../../hooks/useScrollToTop.ts'
 import { Toaster } from 'react-hot-toast'
 
 const Layout = (): ReactElement => {
