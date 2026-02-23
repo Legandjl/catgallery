@@ -61,13 +61,25 @@ const Upload = (): ReactElement => {
     e.stopPropagation()
   }
 
+  const triggerFilePicker = () => {
+    inputRef.current?.click()
+  }
+
   const handleUploaderClick = (e: MouseEvent<HTMLDivElement>) => {
     if (isSubmitting) return
 
     const target = e.target as HTMLElement
     if (target.closest('button')) return
 
-    inputRef.current?.click()
+    triggerFilePicker()
+  }
+
+  const handleUploaderKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (isSubmitting) return
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      triggerFilePicker()
+    }
   }
 
   const handleSubmit = async () => {
@@ -97,10 +109,14 @@ const Upload = (): ReactElement => {
       <div
         className={styles.uploader}
         onClick={handleUploaderClick}
+        onKeyDown={handleUploaderKeyDown}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
+        role="button"
+        tabIndex={0}
+        aria-label="Select or drop a cat image to upload"
       >
         <h2>Upload</h2>
 
