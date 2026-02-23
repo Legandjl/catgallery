@@ -69,10 +69,12 @@
   height: 100%;
   min-height: 0;
   overflow: auto;
+  padding-bottom: 1.5rem;
 }
 
 .footer {
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 0.75rem;
   .header {
     height: 64px;
   }
