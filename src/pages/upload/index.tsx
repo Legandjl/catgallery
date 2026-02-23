@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import styles from './upload.module.scss'
 import { catApi } from '../../features/cats/api/catApi'
 import cat from '../../assets/images/cat.svg'
+import toast from 'react-hot-toast'
 
 const MAX_SIZE = 5 * 1024 * 1024
 
@@ -83,6 +84,7 @@ const Upload = (): ReactElement => {
       await queryClient.invalidateQueries({ queryKey: ['cats', 'my-images'] })
       await queryClient.refetchQueries({ queryKey: ['cats', 'my-images'] })
       navigate('/')
+      toast.success('Cat uploaded!')
     } catch (err) {
       setError((err as Error).message)
     } finally {
